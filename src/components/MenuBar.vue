@@ -1,0 +1,73 @@
+<template>
+    <div class="menu-bar">
+      <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect">
+        <el-submenu index="1">
+          <template slot="title">File</template>
+          <el-menu-item index="1-1">
+          <el-button type="text">Open</el-button>
+            <!-- <OpenRawlog/> -->
+          </el-menu-item>
+          <el-menu-item index="1-2">Save As</el-menu-item>
+          <el-submenu index="1-3">
+            <template slot="title">Operation on Files</template>
+            <el-menu-item index="1-3-1">Count Entries</el-menu-item>
+            <el-menu-item index="1-3-2">Convert to observation only RawLog</el-menu-item>
+            <el-menu-item index="1-3-3">Loss-less decimation</el-menu-item>
+            <el-menu-item index="1-3-4">Compact Rawlog</el-menu-item>
+          </el-submenu>
+          <el-submenu index="1-4">
+            <template slot="title">Import</template>
+            <el-menu-item index="1-4-1">Carmen Log</el-menu-item>
+            <el-menu-item index="1-4-2">Sequence of image files</el-menu-item>
+            <el-menu-item index="1-4-3">MOOS alog</el-menu-item>
+            <el-menu-item index="1-4-4">RTL Log</el-menu-item>
+            <el-menu-item index="1-4-5">Bremen DLR Log</el-menu-item>
+          </el-submenu>
+          <el-submenu index="1-5">
+            <template slot="title">Export</template>
+            <el-menu-item index="1-5-1">Plain text files</el-menu-item>
+            <el-menu-item index="1-5-2">MOOS alog</el-menu-item>
+          </el-submenu>
+        </el-submenu>
+        <el-submenu index="2">
+          <template slot="title">Edit</template>
+        </el-submenu>
+        <el-submenu index="3">
+          <template slot="title">Sensors</template>
+        </el-submenu>
+        <el-submenu index="4">
+          <template slot="title">Tools</template>
+        </el-submenu>
+        <OpenRawlog/>
+      </el-menu>
+    </div>
+</template>
+
+<script>
+import OpenRawlog from '@/components/OpenRawlog.vue';
+import { mapState } from 'vuex';
+
+export default {
+  data() {
+    return {
+      activeIndex: "1",
+      dialogVisible: false
+    };
+  },
+  components: {
+    OpenRawlog
+  },
+  computed: {
+      ...mapState([
+    ]),
+  },
+  methods: {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    }
+  }
+};
+</script>
+
+<style scoped>
+</style>
