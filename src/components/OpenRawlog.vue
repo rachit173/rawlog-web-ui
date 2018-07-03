@@ -34,6 +34,7 @@ export default {
   },
   methods: {
     onSubmit() {
+        this.$store.commit('SET_RAWLOG_LOADED', false);
         const path = this.formInline.path;
         console.log(path);
         const ws = this.$store.state.ws;
@@ -45,8 +46,11 @@ export default {
         const request = new MRPTLIB.ServiceRequest({
           path
         })
-        loadRawlogClient.callService(request, function(result) {
-          console.log('load rawlog result', result);
+        loadRawlogClient.callService(request, (result) => {
+          if (result.loaded) {
+            console.log(result);
+            this.$store.commit('SET_RAWLOG_LOADED', true);
+          }
         })
     }
   }

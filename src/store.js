@@ -6,12 +6,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    displayOpenRawlogForm: true,
-    ws: new MRPTLIB.WS()
+    ws: new MRPTLIB.WS(),
+    rawlogLoaded: false
   },
   getters: {
-    getState: state => {
-      return state.displayOpenRawlogForm;
+    getRawlogState: state => {
+      return state.rawlogLoaded;
     },
     getWS: state => {
       return state.ws;
@@ -20,6 +20,9 @@ export default new Vuex.Store({
   mutations: {
     WRAP: (state, $socket) => {
       state.ws.wrap($socket);
+    },
+    SET_RAWLOG_LOADED: (state, foo) => {
+      state.rawlogLoaded = foo;
     }
   },
   actions: {
