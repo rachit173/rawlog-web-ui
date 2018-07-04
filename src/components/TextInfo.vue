@@ -1,12 +1,16 @@
 <template>
-  <el-container style="height: 40vh; border: 1px solid #eee" id="text-info">
-    Hello, here you will find the rawlog data.
+  <el-container style="height: 40vh;" id="text-info">
+    <textarea style="height:98%;width:100%;resize:none;" id="area" align="left" v-model="text" readonly></textarea>
   </el-container>
 </template>
 
 <script>
 export default {
-
+  computed: {
+    text() {
+      return this.$store.state.currentLogText;
+    }
+  }
 }
 </script>
 
