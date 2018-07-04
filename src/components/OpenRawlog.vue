@@ -1,42 +1,23 @@
 <template>
-  <el-form :inline="true" :model="formInline" class="demo-form-inline">
-    <el-form-item label="File Path">
-      <el-input v-model="formInline.path" placeholder="~/.../***.rawlog"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="onSubmit">Load File</el-button>
-    </el-form-item>
-  </el-form>
+  <el-button type="text" @click="open">{{ text }}</el-button>
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import MRPTLIB from 'mrpt-web-js';
-
 export default {
-  data() {
-    return {
-      dialogVisible: false,
-      formInline: {
-        path : ''
-      }
-    };
-  },
   props: {
-    // dialogVisible: {
-    //   type: Boolean,
-    //   default: false,
-    //   required: true
-    // }
-  },
-  computed: {
-    // other computed properties
+    text: String
   },
   methods: {
-    onSubmit() {
+    open() {
+      this.$prompt('File location', 'Load rawlog', {
+        confirmButtonText: 'Open',
+        cancelButtonText: 'Cancel',
+        inputErrorMessage: 'Invalid File Type'
+      }).then(input => {
+        const path = input.value || "";
+        console.log('rawlog path', path);
         this.$store.commit('SET_RAWLOG_LOADED', false);
-        const path = this.formInline.path;
-        console.log(path);
         const ws = this.$store.state.ws;
         console.log('connected', ws.isConnected);
         const loadRawlogClient = new MRPTLIB.Service({
@@ -45,13 +26,19 @@ export default {
         });
         const request = new MRPTLIB.ServiceRequest({
           path
-        })
+        });
         loadRawlogClient.callService(request, (result) => {
           if (result.loaded) {
             console.log(result);
             this.$store.commit('SET_RAWLOG_LOADED', true);
           }
-        })
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'File not loaded'
+        });
+      });
     }
   }
 }

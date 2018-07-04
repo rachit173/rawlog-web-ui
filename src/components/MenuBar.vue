@@ -4,8 +4,7 @@
         <el-submenu index="1">
           <template slot="title">File</template>
           <el-menu-item index="1-1">
-          <el-button type="text">Open</el-button>
-            <!-- <OpenRawlog/> -->
+            <OpenRawlog text="Open"/>
           </el-menu-item>
           <el-menu-item index="1-2">Save As</el-menu-item>
           <el-submenu index="1-3">
@@ -38,7 +37,6 @@
         <el-submenu index="4">
           <template slot="title">Tools</template>
         </el-submenu>
-        <OpenRawlog/>
       </el-menu>
     </div>
 </template>
