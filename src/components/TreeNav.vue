@@ -25,6 +25,8 @@ import { mapGetters } from 'vuex';
       handleNodeClick(data) {
         console.log(data);
         console.log(data.index);
+        console.log('requesting data from server');
+        this.$store.dispatch('LOAD_MAIN_DATA', Number.parseInt(data.index));
       },
       getTreeData() {
         const ws = this.$store.state.ws;
