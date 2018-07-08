@@ -27,3 +27,13 @@ This creates a symbolic link between the two packages.
 2. cd mrpt-web/build
 3. cd apps/rawlog-viewer
 4. ./rawlog-viewer 127.0.0.1 5000
+<br>
+The server should be started before running the web-app.<br>
+A green button, on the app depicts an established connection with the server.<br>
+If the connection is not established, try refreshing the page.<br>
+## Currently implemented features
+1. Load rawlog. (File/Open)
+2. Selecting a log from the navbar. The text details can be viewed.
+3. Set Motion model.
+
+## For the latest implemented features use the dev branches.
