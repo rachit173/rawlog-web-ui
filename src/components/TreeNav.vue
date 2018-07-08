@@ -38,6 +38,7 @@ import { mapGetters } from 'vuex';
         const request = new MRPTLIB.ServiceRequest({});
         loadTreeClient.callService(request, (result) => {
             this.arrangeData(result);
+            this.$store.commit('SET_TREE_DATA', result);
         });
       },
       arrangeData(data) {

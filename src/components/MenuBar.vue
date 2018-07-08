@@ -33,6 +33,18 @@
         </el-submenu>
         <el-submenu index="3">
           <template slot="title">Sensors</template>
+          <el-submenu index="3-1">
+            <template slot="title">LaserScan</template>
+            <el-menu-item index="3-1-1">
+              <animate-laser-scan text="Animate LaserScan"/>
+            </el-menu-item>
+          </el-submenu>
+          <el-submenu index="3-2">
+            <template slot="title">Odometry (actions)</template>
+            <el-menu-item index="3-2-1">
+              <motion-model text="Modify motion model"/>
+            </el-menu-item>
+          </el-submenu>
         </el-submenu>
         <el-submenu index="4">
           <template slot="title">Tools</template>
@@ -43,6 +55,8 @@
 
 <script>
 import OpenRawlog from '@/components/OpenRawlog.vue';
+import AnimateLaserScan from '@/components/AnimateLaserScan.vue';
+import MotionModel from '@/components/MotionModel.vue';
 import { mapState } from 'vuex';
 
 export default {
@@ -53,7 +67,9 @@ export default {
     };
   },
   components: {
-    OpenRawlog
+    OpenRawlog,
+    AnimateLaserScan,
+    MotionModel
   },
   computed: {
       ...mapState([
