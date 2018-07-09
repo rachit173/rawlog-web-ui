@@ -7,7 +7,7 @@
 <script>
 /* eslint-disable */
 import MRPTLIB from 'mrpt-web-js';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
   export default {
     data() {
@@ -26,10 +26,10 @@ import { mapGetters } from 'vuex';
         console.log(data);
         console.log(data.index);
         console.log('requesting data from server');
-        this.$store.dispatch('LOAD_MAIN_DATA', Number.parseInt(data.index));
+        this.loadMainData(Number.parseInt(data.index));
       },
       getTreeData() {
-        const ws = this.$store.state.ws;
+        const ws = this.getWS;
         console.log('connected', ws.isConnected);
         const loadTreeClient = new MRPTLIB.Service({
           ws: ws,
@@ -38,7 +38,7 @@ import { mapGetters } from 'vuex';
         const request = new MRPTLIB.ServiceRequest({});
         loadTreeClient.callService(request, (result) => {
             this.arrangeData(result);
-            this.$store.commit('SET_TREE_DATA', result);
+            this.setTreeData(result);
         });
       },
       arrangeData(data) {
@@ -56,12 +56,21 @@ import { mapGetters } from 'vuex';
             index: i
           };
         }
-      }
+      },
+      ...mapMutations({
+        setTreeData: 'SET_TREE_DATA'
+      }),
+      ...mapActions({
+        loadMainData: 'LOAD_MAIN_DATA'
+      })
     },
     computed: {
       ...mapGetters({
         rawlogLoaded: 'getRawlogState'
-      })
+      }),
+      ...mapGetters([
+        'getWS'
+      ])
     },
     watch: {
       rawlogLoaded (newCheck, oldCheck) {

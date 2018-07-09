@@ -4,6 +4,7 @@
 
 <script>
 import MRPTLIB from 'mrpt-web-js';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
   props: {
     text: String
@@ -17,8 +18,8 @@ export default {
       }).then(input => {
         const path = input.value || "";
         console.log('rawlog path', path);
-        this.$store.commit('SET_RAWLOG_LOADED', false);
-        const ws = this.$store.state.ws;
+        this.setRawlogLoaded(false);
+        const ws = this.getWS;
         console.log('connected', ws.isConnected);
         const loadRawlogClient = new MRPTLIB.Service({
           ws: ws,
@@ -30,7 +31,7 @@ export default {
         loadRawlogClient.callService(request, (result) => {
           if (result.loaded) {
             console.log(result);
-            this.$store.commit('SET_RAWLOG_LOADED', true);
+            this.setRawlogLoaded(true);
           }
         });
       }).catch(() => {
@@ -39,7 +40,15 @@ export default {
           message: 'File not loaded'
         });
       });
-    }
+    },
+    ...mapMutations({
+      setRawlogLoaded: 'SET_RAWLOG_LOADED'
+    })
+  },
+  computed: {
+    ...mapGetters([
+      'getWS'
+    ])
   }
 }
 </script>
