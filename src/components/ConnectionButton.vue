@@ -6,19 +6,28 @@
 </template>
 
 <script>
+import { mapMutations, mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
     }
   },
+  methods: {
+    ...mapMutations({
+      wrap: 'WRAP'
+    })
+  },
   mounted() {
-    this.$store.commit('WRAP',this.$socket);
-    console.log(this.$store.state.ws);
+    this.wrap(this.$socket);
   },
   computed: {
     connected() {
-    return this.$store.state.ws.isConnected;
-    }
+    return this.getWS.isConnected;
+    },
+    ...mapGetters([
+      'getWS'
+    ])
   }
 }
 </script>

@@ -116,6 +116,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 export default {
   props: {
     text: String,
@@ -207,18 +208,24 @@ export default {
           edA1,edA2,edA3,edA4,edNumParts,edAddXY,edAddPhi
         };
       }
-      this.$store.dispatch('UPLOAD_MOTION_MODEL', sendData);
+      this.uploadModel(sendData);
     },
     drawSamples() {
 
-    }
+    },
+    ...mapActions({
+      uploadModel: 'UPLOAD_MOTION_MODEL'
+    })
   },
   computed: {
     rawlogSize() {
-      let arr = this.$store.getters.getTree;
+      let arr = this.getTree;
       let size =  ((arr.length - 1) || 0);
       return size;
-    }
+    },
+    ...mapGetters([
+      'getTree'
+    ])
   },
   watch: {
     rawlogSize: function(newVal, oldVal) {
@@ -227,10 +234,10 @@ export default {
     }
   },
   created() {
-    this.maxIdx = (this.$store.getters.getTree.length - 1) || 0;
+    this.maxIdx = (this.getTree.length - 1) || 0;
   },
   mounted() {
-    this.maxIdx = (this.$store.getters.getTree.length - 1) || 0;
+    this.maxIdx = (this.getTree.length - 1) || 0;
   }
 }
 </script>
