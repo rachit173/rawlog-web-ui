@@ -48,6 +48,9 @@
         </el-submenu>
         <el-submenu index="4">
           <template slot="title">Tools</template>
+          <el-menu-item index="4-1">
+            <map-generation text="map and path generation module"/>
+          </el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
@@ -57,6 +60,7 @@
 import OpenRawlog from '@/components/OpenRawlog.vue';
 import AnimateLaserScan from '@/components/AnimateLaserScan.vue';
 import MotionModel from '@/components/MotionModel.vue';
+import MapGeneration from '@/components/MapGeneration.vue';
 import { mapState } from 'vuex';
 
 export default {
@@ -69,7 +73,8 @@ export default {
   components: {
     OpenRawlog,
     AnimateLaserScan,
-    MotionModel
+    MotionModel,
+    MapGeneration
   },
   computed: {
       ...mapState([
