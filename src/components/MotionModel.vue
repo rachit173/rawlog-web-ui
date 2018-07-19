@@ -105,8 +105,25 @@
             </el-container>
           </el-tabs>
         </el-container>
-        <el-container width="30%">
-          Plots for the samples
+        <el-container width="30%" direction="vertical">
+          <h3>Plots for the samples</h3><br>
+          <el-container direction="horizontal">
+            <el-container direction="vertical">
+              <p>Ax</p>
+              <el-input-number size="mini" v-model="Ax" :min="-1000000" :max="1000000"></el-input-number>
+            </el-container>
+            <el-container direction="vertical">
+              <p>Ay</p>
+              <el-input-number size="mini" v-model="Ay" :min="-1000000" :max="1000000"></el-input-number>
+            </el-container>
+            <el-container direction="vertical">
+              <p>Aphi_deg</p>
+              <el-input-number size="mini" v-model="Aphi" :min="-1000000" :max="1000000"></el-input-number>
+              <br><br>
+            </el-container>
+          </el-container>
+          <el-container style="min-height: 30vh;"><graph-component divID="motion-model-samples1" :plotData="data1"></graph-component></el-container>
+          <el-container style="min-height: 30vh;"><graph-component divID="motion-model-samples2" :plotData="data2"></graph-component></el-container>
         </el-container>
       </el-container>
       <span slot="footer" class="dialog-footer">
@@ -117,6 +134,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import GraphComponent from '@/components/GraphComponent.vue';
+import MRPTLIB from 'mrpt-web-js';
+
 export default {
   props: {
     text: String,
@@ -154,6 +174,11 @@ export default {
       default_edNumParts: 300,
       default_edAddXY: 0.001,
       default_edAddPhi: 0.050,
+      data1: { xs: [], ys: []},
+      data2: { xs: [], ys: []},
+      Ax : 0.3,
+      Ay: 0.1,
+      Aphi: 10
     };
   },
   methods: {
@@ -180,7 +205,7 @@ export default {
       }
       this.apply();
     },
-    apply() {
+    getSendData() {
       let sendData;
       if(this.activeName === 'first') {
         const edG_A1 = this.edG_A1;
@@ -208,10 +233,37 @@ export default {
           edA1,edA2,edA3,edA4,edNumParts,edAddXY,edAddPhi
         };
       }
+      return sendData;
+    },
+    apply() {
+      let sendData = this.getSendData();
       this.uploadModel(sendData);
     },
     drawSamples() {
+      console.log("drawing samples");
+      let sendData = this.getSendData();
+      const ws = this.getWS;
+      console.log('connected', ws.isConnected);
 
+      const samplesDrawClient = new MRPTLIB.Service({
+        ws: ws,
+        name: 'DrawRandomSamples'
+      });
+      const request = new MRPTLIB.ServiceRequest({
+        sendData,
+        Ax: this.Ax,
+        Ay: this.Ay,
+        Aphi: this.Aphi
+      });
+      samplesDrawClient.callService(request, (result) => {
+        if (result.err)
+        {
+          console.error(result.err);
+        }
+        console.log(result);
+        this.data1 = result.position;
+        this.data2 = result.orientation;
+      })
     },
     ...mapActions({
       uploadModel: 'UPLOAD_MOTION_MODEL'
@@ -224,7 +276,8 @@ export default {
       return size;
     },
     ...mapGetters([
-      'getTree'
+      'getTree',
+      'getWS'
     ])
   },
   watch: {
@@ -238,6 +291,9 @@ export default {
   },
   mounted() {
     this.maxIdx = (this.getTree.length - 1) || 0;
+  },
+  components: {
+    GraphComponent
   }
 }
 </script>
