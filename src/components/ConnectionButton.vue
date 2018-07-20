@@ -1,7 +1,7 @@
 <template>
   <div class="connection">
-    <el-button v-if="connected" icon="el-icon-circle-check" type="success" circle></el-button>
-    <el-button v-else icon="el-icon-circle-close" type="danger" circle></el-button>
+    <el-button @click="disconnectHandle" v-if="connected" icon="el-icon-circle-check" type="success" circle></el-button>
+    <el-button @click="connectHandle" v-else icon="el-icon-circle-close" type="danger" circle></el-button>
   </div>
 </template>
 
@@ -16,7 +16,16 @@ export default {
   methods: {
     ...mapMutations({
       wrap: 'WRAP'
-    })
+    }),
+    connectHandle() {
+      console.log("Connecting...");
+      this.$connect();
+      this.$socket.onopen = () => {this.wrap(this.$socket);};
+    },
+    disconnectHandle() {
+      console.log("Disconnecting...");
+      this.$disconnect();
+    }
   },
   mounted() {
     this.wrap(this.$socket);
