@@ -9,8 +9,12 @@
 import { mapMutations, mapGetters } from 'vuex';
 
 export default {
+  props: {
+    address: String,
+  },
   data() {
     return {
+      nativeSocket: null
     }
   },
   methods: {
@@ -19,16 +23,26 @@ export default {
     }),
     connectHandle() {
       console.log("Connecting...");
-      this.$connect();
-      this.$socket.onopen = () => {this.wrap(this.$socket);};
+      if (this.connected) {
+        this.disconnectHandle();
+      }
+      try{
+        this.nativeSocket = new WebSocket(this.address);
+        this.nativeSocket.onopen = () => { this.wrap(this.nativeSocket); }
+      }
+      catch(err) {
+        console.log("Could not create the socket");
+      }
     },
     disconnectHandle() {
       console.log("Disconnecting...");
-      this.$disconnect();
+      if (this.nativeSocket) {
+        this.nativeSocket.close();
+      }
     }
   },
   mounted() {
-    this.wrap(this.$socket);
+    this.wrap(this.nativeSocket);
   },
   computed: {
     connected() {

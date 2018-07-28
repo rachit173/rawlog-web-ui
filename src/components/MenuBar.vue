@@ -52,6 +52,12 @@
             <map-generation text="map and path generation module"/>
           </el-menu-item>
         </el-submenu>
+          <el-container style="padding: 1vh; width: 40%;">
+            <el-input placeholder="localhost:5000" v-model="address">
+              <template slot="prepend">ws://</template>
+          </el-input>
+          <connection-button :address='completeAddress'></connection-button>
+        </el-container>
       </el-menu>
     </div>
 </template>
@@ -61,24 +67,30 @@ import OpenRawlog from '@/components/OpenRawlog.vue';
 import AnimateLaserScan from '@/components/AnimateLaserScan.vue';
 import MotionModel from '@/components/MotionModel.vue';
 import MapGeneration from '@/components/MapGeneration.vue';
+import ConnectionButton from '@/components/ConnectionButton.vue';
 import { mapState } from 'vuex';
 
 export default {
   data() {
     return {
       activeIndex: "1",
-      dialogVisible: false
+      dialogVisible: false,
+      address: ''
     };
   },
   components: {
     OpenRawlog,
     AnimateLaserScan,
     MotionModel,
-    MapGeneration
+    MapGeneration,
+    ConnectionButton
   },
   computed: {
       ...mapState([
     ]),
+    completeAddress() {
+      return "ws://" + this.address;
+    }
   },
   methods: {
     handleSelect(key, keyPath) {

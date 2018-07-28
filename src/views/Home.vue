@@ -4,7 +4,6 @@
     <el-container style="height: 98vh; border: 1px solid #eee">
       <el-header>
           <MenuBar/>
-          <ConnectionButton align="right"/>
       </el-header>
       <el-container>
         <el-main>
